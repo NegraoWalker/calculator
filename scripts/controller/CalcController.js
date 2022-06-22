@@ -1,4 +1,4 @@
-class CalcController { //Representação das regras de negócio do projeto
+class CalcController { //Representação das regras de negócio do projeto - Onde será definidos as propriedades/chaves e métodos do projeto
     constructor() { //Método construtor definido para a classe
         this._locale = "pt-br"
         this._displayCalEl = document.querySelector("#display") //Selecionando o elemento com id display
@@ -6,6 +6,7 @@ class CalcController { //Representação das regras de negócio do projeto
         this._timeEl = document.querySelector("#hora")
         this._currentDate // O uso do _ antes do nome da propriedade é usado para altera-lá para private
         this.initialize()
+        this.initButtonsEvents()
     }
 
 
@@ -16,6 +17,41 @@ class CalcController { //Representação das regras de negócio do projeto
             this.setDisplayDateTime()
         }, 1000)
     }
+
+    addEventListenerAll(element, events, f) { // Método que adiciona vários eventos para um mesmo elemento HTML. Primeiro parâmetro => elemento HTML; Segundo parâmetro são os eventos separados por espaço; Terceiro parâmetro função de callback.
+
+        events.split(" ").forEach((e) => { // transformando os eventos na formato de String para Array com a separador de espaço. Utilizo o forEach para percorrer todos os elementos HTML selecionados e vou adicionando cada evento passado para os mesmos.
+            element.addEventListener(e, f, false)
+        })
+
+    }
+
+    initButtonsEvents() { //Método para capturar os eventos de click dos botões da calculadora
+        let buttons = document.querySelectorAll("#buttons > g, #parts > g") // Estou selecionando todos os elementos filhos dos id's buttons e parts.
+
+        buttons.forEach((btn, index) => { // Percorrendo cada botão do NodeList e adicionando um evento de click. O forEach -> paraCada
+
+            this.addEventListenerAll(btn, "dblclick click mouseover", (element) => { // element é o elemento que recebeu o evento. Esse element vem com suas informações especificas
+                console.log(btn.className.baseVal.replace("btn-", "")) //Transformando a exibição em somente a tecla correspondente dos números e operações
+                alert("teste")
+            })
+
+            this.addEventListenerAll(btn, "mouseover mouseup mousedown", (e) => { // Adicionando os eventos de passagem do mouse para que o cursor do mouse se torne a mãozinha para quando selecionar as teclas da calculadora
+
+                btn.style.cursor = "pointer"
+
+            })
+        })
+    }
+
+
+
+
+
+
+
+
+
 
     setDisplayDateTime() { // Método que define o nosso locale no formato do Brasil
         this.displayTime = this.currentDate.toLocaleTimeString(this.locale)
