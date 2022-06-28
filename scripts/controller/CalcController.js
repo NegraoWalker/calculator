@@ -36,8 +36,35 @@ class CalcController { //Representação das regras de negócio do projeto - Ond
         this._operation.pop()
     }
 
+    getLastOperation() { //Método usado que pega a última posição de um array
+        return this._operation[this._operation.length - 1] //Pegando o valor do ultimo elemento do vetor
+    }
+
+    setLastOperation(value) {
+        value = this._operation[this._operation.length - 1]
+    }
+
+    isOperator(value) { //Método usado para trocar o ultimo operador digitado
+        return (['+', '-', '*', '/', '%'].indexOf(value) > -1) //Retorna true se o operador digitado pelo user for algum desses valores
+    }
     addOperation(value) { //Método para adicionar uma operação (valor ou sinal) para realizar a funcionalidadena calculadora
-        this._operation.push(value)
+
+        if (isNaN(this.getLastOperation())) {
+            //Pega String
+            if (this.isOperator(value)) {   //Verificando se o user quer trocar o ultimo operador apertado por outro
+                this._setLastOperator(value) //Trocando o último operador para o novo fornecido
+            } else if (isNaN(value)) {
+                console.log(value)
+            } else {
+                this._operation.push(value)
+            }
+
+        } else {
+            //Pega Number
+            let newValue = this.getLastOperation().toString() + value.toString() //Somo o ultimo numero digitado no formato em String e concateno o novo número digitado também no formato de String
+            this.setLastOperation(parseInt(newValue))
+        }
+
         console.log(this._operation)
     }
 
@@ -54,23 +81,28 @@ class CalcController { //Representação das regras de negócio do projeto - Ond
                 this.clearEntry()
                 break
             case "soma":
-
+                this.addOperation('+')
                 break
             case "subtracao":
-
+                this.addOperation('-')
                 break
             case "divisao":
-
+                this.addOperation('/')
                 break
             case "multiplicacao":
-
+                this.addOperation('*')
                 break
             case "porcento":
-
+                this.addOperation('%')
                 break
             case "igual":
 
                 break
+
+            case "ponto":
+                this.addOperation('.')
+                break
+
             case "0":
             case "1":
             case "2":
